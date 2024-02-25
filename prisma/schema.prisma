@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type ChapterData {
+	index 			Int
+	name 				String
+	first_page 	Int
+	last_page 	Int
+}
+
+type NoteData {
+	page Int
+	text String
+}
+
+type BookStateData {
+	is_reading  	Boolean
+	is_finished  	Boolean
+	is_abandoned  Boolean
+	is_new  			Boolean
+	is_waiting  	Boolean
+}
+
+model BookData {
+	id 		 			String  @id @default(auto()) @map("_id") @db.ObjectId
+	author 			String
+	name 				String
+	description String 
+	source 			String
+	image 			String
+	state 			BookStateData
+	page 				Int
+	last_page 	Int
+	genre 			String
+	chapter 		ChapterData[]
+	quotes 			NoteData[]
+	notes 			NoteData[]
+}
